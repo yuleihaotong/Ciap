@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2EFE9">
+<meta name="description" content="ciap — 城市，轻一点。济南地点搜索与四种出行方式导航原型。">
+<title>ciap · 城市，轻一点</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg class="svg-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-logo" viewBox="0 0 24 24">
+    <path d="M3 14.3c2.7 0 3.3-3.3 6-3.3s3.3 3.3 6 3.3 3-3.3 6-3.3" fill="none"/>
+    <path d="M3 18.2c2.7 0 3.3-2.3 6-2.3s3.3 2.3 6 2.3 3-2.3 6-2.3" fill="none" opacity=".42"/>
+    <circle cx="12" cy="5.6" r="2.1" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m15.7 15.7 4.6 4.6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-locate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1"/><path d="M12 2.5v3.2M12 18.3v3.2M2.5 12h3.2M18.3 12h3.2"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M14.6 5.4 8 12l6.6 6.6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h14M13 6.5l5.5 5.5-5.5 5.5"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m7 9.5 5 5 5-5"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 16.5v-4l2-5.4c.3-.8 1-1.3 1.9-1.3h6.2c.9 0 1.6.5 1.9 1.3l2 5.4v4"/><path d="M3.8 16.5h16.4M5 16.5v1.8M19 16.5v1.8M7.2 12h9.6"/><circle cx="7.6" cy="16.5" r="1.15"/><circle cx="16.4" cy="16.5" r="1.15"/></symbol>
+  <symbol id="i-bike" viewBox="0 0 24 24"><circle cx="6.4" cy="16.2" r="3.4"/><circle cx="17.6" cy="16.2" r="3.4"/><path d="M9 16.2 12.2 8h3.3M6.4 16.2l2.8-4.7h5.6M12.2 8l5.4 8.2M9.2 8h3"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="15" rx="3"/><path d="M5 10h14M8 18.5v2M16 18.5v2M8.2 14h.01M15.8 14h.01"/></symbol>
+  <symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13.2" cy="4.4" r="1.7"/><path d="m13 7.3-2.8 4.6 3 2 1.4 5M10.2 11.9 7.8 16.7M13.2 13.9l3.3 2.8"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.4v5l3.2 2"/></symbol>
+  <symbol id="i-turn-right" viewBox="0 0 24 24"><path d="M7 20v-6.8a4.2 4.2 0 0 1 4.2-4.2H17"/><path d="m13.8 5.8 3.4 3.2-3.4 3.2"/></symbol>
+  <symbol id="i-turn-left" viewBox="0 0 24 24"><path d="M17 20v-6.8a4.2 4.2 0 0 0-4.2-4.2H7"/><path d="M10.2 5.8 6.8 9l3.4 3.2"/></symbol>
+  <symbol id="i-straight" viewBox="0 0 24 24"><path d="M12 20V5M7.2 9.8 12 5l4.8 4.8"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V3.8M6 4.2h11l-2.2 4.1L17 12.4H6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.2s6.2-5.4 6.2-10.2a6.2 6.2 0 1 0-12.4 0C5.8 15.8 12 21.2 12 21.2Z"/><circle cx="12" cy="10.8" r="2.2"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8.2 18H11a3.2 3.2 0 0 0 3.2-3.2V9.2A3.2 3.2 0 0 1 17.4 6"/></symbol>
+  <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2.8 9.2c2.4 0 2.4-1.8 4.8-1.8s2.4 1.8 4.8 1.8 2.4-1.8 4.8-1.8 2.4 1.8 4 1.8M2.8 14.4c2.4 0 2.4-1.8 4.8-1.8s2.4 1.8 4.8 1.8 2.4-1.8 4.8-1.8 2.4 1.8 4 1.8M2.8 19.6c2.4 0 2.4-1.8 4.8-1.8s2.4 1.8 4.8 1.8 2.4-1.8 4.8-1.8 2.4 1.8 4 1.8"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20.2 3.8C11 4.2 4.2 8.4 4.2 16.1c0 2 .9 3.9 2.4 4.1 3.6.5 10.6-2.1 12.4-9.1.6-2.4 1-5.6 1.2-7.3Z"/><path d="M4.8 20c1.2-4.4 4.2-8.2 8.6-11.2"/></symbol>
+  <symbol id="i-mountain" viewBox="0 0 24 24"><path d="m2.8 19 6-9.5 3.2 4.4 3.4-6 5.8 11.1Z"/><path d="m12 19 3.2-5"/></symbol>
+  <symbol id="i-museum" viewBox="0 0 24 24"><path d="M3.8 20h16.4M5.2 20V9.2 8l6.8-3.8L18.8 8v1.2V20M9 20v-6.5h6V20M8.8 11h.01M15.2 11h.01"/></symbol>
+  <symbol id="i-train" viewBox="0 0 24 24"><rect x="5.2" y="3.5" width="13.6" height="14.2" rx="4"/><path d="M5.2 10.5h13.6M8.6 21l2-3.3M15.4 21l-2-3.3M9 14.6h.01M15 14.6h.01"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M10.4 13.6 3.2 11l1.6-2.1 6.7 1.2 3.9-5.7 2 1.1-1.9 6.1 4.1 3.8-1.5 2.1-4.6-2.8-2.1 4.3-2-1.1Z"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.2 8.2h13.6L17.7 20H6.3L5.2 8.2Z"/><path d="M9 8.2V6a3 3 0 0 1 6 0v2.2"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M5 21V4.8l7-2v18.2M12 21h7V9.2l-7-4.4M8.2 7.6h.01M8.2 11.4h.01M8.2 15.2h.01M15.2 12h.01M15.2 16h.01"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="M4.2 10.2V20h15.6v-9.8M3.2 10.2 5 4h14l1.8 6.2M9 20v-5.2h6V20"/></symbol>
+  <symbol id="i-signal" viewBox="0 0 24 24"><path d="M3 18h2.4v3H3zM7.2 14.4h2.4V21H7.2zM11.4 10.8H14V21h-2.6zM15.6 7.2h2.4V21h-2.4z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9.2c5-4.6 13-4.6 18 0M6 12.6c3.4-3 8.6-3 12 0M9 16c1.8-1.5 4.2-1.5 6 0"/><circle cx="12" cy="19" r="1.1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-battery" viewBox="0 0 24 24"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 11v2"/><rect x="5" y="10" width="11.5" height="4" rx="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.6 4.4 4.4L19 7.4"/></symbol>
+</svg>
+
+<main class="stage">
+  <aside class="stage-copy" aria-hidden="true">
+    <div class="stage-kicker">INTERACTION PROTOTYPE · 01</div>
+    <div class="stage-brand">ciap</div>
+    <h1>城市，<br><span>轻一点。</span></h1>
+    <p class="stage-lede">只做两件事的地图：<br>找到地方，然后出发。</p>
+    <div class="stage-facts">
+      <div><b>01</b><span>地点搜索</span></div>
+      <div><b>02</b><span>四种出行</span></div>
+      <div><b>03</b><span>安静导航</span></div>
+    </div>
+    <div class="stage-foot">
+      <span>济南 · 泉城首发</span>
+      <span>Android first · iOS ready</span>
+    </div>
+  </aside>
+
+  <div class="stage-device-wrap">
+    <div class="device" id="device" data-view="home">
+      <span class="punch-hole" aria-hidden="true"></span>
+      <canvas id="map" aria-label="济南地图，可拖动缩放"></canvas>
+      <div class="map-glow" aria-hidden="true"></div>
+      <div class="grain" aria-hidden="true"></div>
+
+      <div class="status-bar">
+        <span class="status-time" id="status-time">16:32</span>
+        <span class="status-icons" aria-hidden="true">
+          <svg class="ico"><use href="#i-signal"/></svg>
+          <svg class="ico"><use href="#i-wifi"/></svg>
+          <svg class="ico"><use href="#i-battery"/></svg>
+        </span>
+      </div>
+
+      <!-- HOME -->
+      <section class="home-ui" id="home-ui" aria-label="首页">
+        <header class="home-head">
+          <div class="brand-row">
+            <span class="brand-badge"><svg class="ico"><use href="#i-logo"/></svg></span>
+            <span class="brand-word">ciap</span>
+            <span class="brand-city">济南 · JINAN</span>
+          </div>
+          <button class="search-pill glass" id="search-open" type="button" aria-label="搜索济南的地点">
+            <svg class="ico"><use href="#i-search"/></svg>
+            <span class="search-placeholder">搜索地点、街道、公交站</span>
+            <span class="search-hint">济南</span>
+          </button>
+        </header>
+
+        <button class="map-control glass" id="locate-btn" type="button" aria-label="回到我的位置">
+          <svg class="ico"><use href="#i-locate"/></svg>
+        </button>
+
+        <aside class="home-card glass" aria-label="快捷出发">
+          <div class="card-head">
+            <div>
+              <div class="eyebrow"><span class="live-dot"></span>此刻 · 泉城</div>
+              <h2>去哪里？</h2>
+            </div>
+            <button class="text-btn" id="route-open" type="button">路线<svg class="ico"><use href="#i-arrow"/></svg></button>
+          </div>
+          <div class="quick-list" id="quick-list"></div>
+          <div class="card-foot">
+            <span id="home-footnote">从泉城广场出发</span>
+            <span class="data-note">AMap · 演示数据</span>
+          </div>
+        </aside>
+      </section>
+
+      <!-- SEARCH -->
+      <section class="search-screen" id="search-screen" aria-hidden="true" aria-label="搜索">
+        <div class="search-top">
+          <button class="icon-btn glass" id="search-back" type="button" aria-label="返回"><svg class="ico"><use href="#i-back"/></svg></button>
+          <label class="search-field glass" for="search-input">
+            <svg class="ico"><use href="#i-search"/></svg>
+            <input id="search-input" type="text" placeholder="搜索济南" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="搜索济南的地点">
+            <button class="clear-btn" id="search-clear" type="button" aria-label="清空搜索" hidden><svg class="ico"><use href="#i-close"/></svg></button>
+          </label>
+          <button class="cancel-btn" id="search-cancel" type="button">取消</button>
+        </div>
+        <div class="search-body">
+          <div class="search-section" id="search-recents">
+            <div class="section-head"><span class="eyebrow">最近</span></div>
+            <div id="search-recent-list"></div>
+          </div>
+          <div class="search-section" id="search-hot-section">
+            <div class="section-head"><span class="eyebrow">济南热门</span><span class="section-note">按距离</span></div>
+            <div class="search-results" id="search-results"></div>
+          </div>
+          <div class="search-section" id="search-related" hidden>
+            <div class="section-head"><span class="eyebrow">也许还想去</span><span class="section-note">附近</span></div>
+            <div class="search-results" id="search-related-list"></div>
+          </div>
+          <div class="search-empty" id="search-empty" hidden>
+            <div class="empty-mark"><svg class="ico"><use href="#i-pin"/></svg></div>
+            <h3>没找到这个地方</h3>
+            <p>换个说法试试，比如「大明湖」</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PLACE SHEET -->
+      <section class="place-sheet glass" id="place-sheet" aria-hidden="true" aria-label="地点详情">
+        <div class="sheet-grab" id="place-grab"><span></span></div>
+        <div class="place-inner">
+          <div class="place-head">
+            <div class="eyebrow" id="place-type">泉水 · 5A 景区</div>
+            <button class="icon-btn soft" id="place-close" type="button" aria-label="关闭地点详情"><svg class="ico"><use href="#i-close"/></svg></button>
+          </div>
+          <h1 class="place-name" id="place-name">趵突泉</h1>
+          <p class="place-address" id="place-address">历下区趵突泉南路 1 号</p>
+          <div class="place-meta" id="place-meta">距你 1.2 公里 · 步行 16 分钟</div>
+          <div class="mode-row" id="mode-row"></div>
+          <div class="sheet-note"><span>路线来自 AMap · 演示数据</span><span>实际以实时规划为准</span></div>
+        </div>
+      </section>
+
+      <!-- ROUTE -->
+      <section class="route-screen" id="route-screen" aria-hidden="true" aria-label="路线规划">
+        <div class="route-top">
+          <button class="icon-btn glass" id="route-back" type="button" aria-label="返回"><svg class="ico"><use href="#i-back"/></svg></button>
+          <div class="trip-card glass">
+            <div class="trip-origin"><span class="trip-dot"></span><span id="trip-origin">我的位置 · 泉城广场</span></div>
+            <div class="trip-rail"></div>
+            <button class="trip-dest" id="trip-dest-btn" type="button">
+              <span class="trip-pin"></span><span id="trip-dest">大明湖</span><span class="trip-edit">更换</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="route-bottom">
+          <div class="route-sheet glass" id="route-sheet">
+            <div class="sheet-grab"><span></span></div>
+            <div class="mode-switch" id="mode-switch" role="tablist" aria-label="出行方式"></div>
+            <div class="route-sheet-head">
+              <div class="route-heading">
+                <div class="eyebrow" id="route-eyebrow">驾车 · 推荐</div>
+                <h2 id="route-title">18 分钟</h2>
+              </div>
+              <div class="route-summary" id="route-summary">6.2 公里</div>
+            </div>
+            <div class="route-scroll">
+              <div class="route-options" id="route-options"></div>
+              <div class="route-detail" id="route-detail" hidden></div>
+            </div>
+            <div class="route-actions">
+              <button class="ghost-btn" id="detail-toggle" type="button">路线详情</button>
+              <button class="primary-btn" id="start-nav" type="button">开始导航<svg class="ico"><use href="#i-arrow"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NAVIGATION -->
+      <section class="nav-ui" id="nav-ui" aria-hidden="true" aria-label="导航">
+        <div class="maneuver-card glass">
+          <div class="maneuver-icon" id="maneuver-icon"><svg class="ico"><use href="#i-turn-right"/></svg></div>
+          <div class="maneuver-copy">
+            <div class="maneuver-distance" id="maneuver-distance">300 米</div>
+            <div class="maneuver-text" id="maneuver-text">右转进入泺源大街</div>
+            <div class="maneuver-next" id="maneuver-next">然后直行 1.2 公里</div>
+          </div>
+        </div>
+        <div class="nav-demo" id="nav-demo">模拟 ×40</div>
+        <div class="nav-bottom">
+          <div class="nav-stats glass">
+            <div class="nav-stat"><span>剩余</span><strong id="nav-remain">18 分钟</strong></div>
+            <div class="nav-stat"><span>距离</span><strong id="nav-distance">6.2 公里</strong></div>
+            <div class="nav-stat"><span>预计到达</span><strong id="nav-eta">17:02</strong></div>
+          </div>
+          <button class="end-btn glass" id="end-nav" type="button">结束</button>
+        </div>
+        <div class="arrive-card glass" id="arrive-card" hidden>
+          <div class="arrive-mark"><svg class="ico"><use href="#i-check"/></svg></div>
+          <h2>到了</h2>
+          <p id="arrive-place">大明湖</p>
+          <button class="primary-btn" id="arrive-done" type="button">完成</button>
+        </div>
+      </section>
+
+      <!-- SPLASH -->
+      <div class="splash" id="splash">
+        <div class="splash-mark">
+          <span class="ripple r1"></span><span class="ripple r2"></span><span class="ripple r3"></span>
+          <span class="splash-dot"></span>
+        </div>
+        <div class="splash-word">ciap</div>
+        <div class="splash-tag">城市，轻一点。</div>
+        <div class="splash-foot"><span>济南 · 泉城</span><span>首发原型 0.1</span></div>
+      </div>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="gesture-bar" aria-hidden="true"></div>
+    </div>
+    <div class="device-caption">ciap · 济南 · 390 × 844 · 可交互原型</div>
+  </div>
+</main>
+
+<script src="js/fixtures.js"></script>
+<script src="js/core.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
